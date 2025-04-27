@@ -1,6 +1,19 @@
 const mongoose = require("mongoose");
 
 const paymentSchema = new mongoose.Schema({
+  order: {
+    items: [
+      {
+        itemId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        name: { type: String, required: true },
+        quantity: { type: Number, required: true },
+        price: { type: Number, required: true }
+      }
+    ],
+    totalQuantity: { type: Number, required: true },
+    totalPrice: { type: Number, required: true }
+  },
+  
   amount: {
     type: Number,
     required: true,
@@ -17,8 +30,9 @@ const paymentSchema = new mongoose.Schema({
     unique: true
   },
   status: {
-    type: String,
-    default: "requires_payment_method"
+      type: String,
+      default: "pending",
+      enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"]
   },
   createdAt: {
     type: Date,
@@ -26,7 +40,6 @@ const paymentSchema = new mongoose.Schema({
   },
 });
 
-// Add index for better query performance
 paymentSchema.index({ paymentIntentId: 1 });
 paymentSchema.index({ createdAt: 1 });
 
