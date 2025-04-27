@@ -1,7 +1,6 @@
 import mongoose, { Schema, Model } from "mongoose";
 import { IPayment } from "../interfaces/IPayment";
 
-
 const paymentSchema: Schema = new mongoose.Schema(
   {
     order: {
@@ -14,6 +13,8 @@ const paymentSchema: Schema = new mongoose.Schema(
         },
       ],
       totalPrice: { type: Number, required: true },
+      totalQuantity: { type: Number, default: 0 },
+      orderId: { type: String } // Add orderId to store the frontend orderId
     },
     amount: {
       type: Number,
@@ -29,6 +30,7 @@ const paymentSchema: Schema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      // Remove index: true to avoid duplicate index warning
     },
     status: {
       type: String,
@@ -39,20 +41,14 @@ const paymentSchema: Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   { timestamps: true }
 );
 
-// Indexes for fast querying
+// Keep only one index declaration for paymentIntentId
 paymentSchema.index({ paymentIntentId: 1 });
+// Add an index for orderId to make lookups faster
+paymentSchema.index({ 'order.orderId': 1 });
 paymentSchema.index({ createdAt: 1 });
 
 // Create and export the model
