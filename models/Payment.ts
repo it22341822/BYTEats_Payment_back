@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema, Model } from "mongoose";
 
-// Define the interface for Order Items
 interface IOrderItem {
   itemId: mongoose.Types.ObjectId;
   name: string;
@@ -8,24 +7,22 @@ interface IOrderItem {
   price: number;
 }
 
-// Define the interface for Order
 interface IOrder {
   items: IOrderItem[];
   totalQuantity: number;
   totalPrice: number;
 }
 
-// Define the main Payment interface extending Mongoose Document
 export interface IPayment extends Document {
   order?: IOrder;
   amount: number;
   currency: string;
   paymentIntentId: string;
-  status: "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
+  status: "pending" | "confirmed" ;
   createdAt: Date;
 }
 
-// Create the schema
+//  schema
 const paymentSchema: Schema = new mongoose.Schema({
   order: {
     items: [
@@ -56,8 +53,8 @@ const paymentSchema: Schema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "pending",
-    enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
+    default: "unpaid",
+    enum: ["paid", "unpaid"],
   },
   createdAt: {
     type: Date,
@@ -65,7 +62,6 @@ const paymentSchema: Schema = new mongoose.Schema({
   },
 });
 
-// Add indexes
 paymentSchema.index({ paymentIntentId: 1 });
 paymentSchema.index({ createdAt: 1 });
 

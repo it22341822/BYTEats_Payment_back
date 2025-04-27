@@ -4,7 +4,7 @@ import Stripe from "stripe";
 import Payment from "../models/Payment";
 
 import dotenv from "dotenv";
-dotenv.config(); // 👈 Load env variables before Stripe
+dotenv.config(); 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2025-03-31.basil",
@@ -24,12 +24,10 @@ export const createPaymentIntent = async (req: Request, res: Response) => {
   const { amount } = req.body as PaymentIntentRequest;
 
   try {
-    // Validate amount
     if (!amount || isNaN(amount)) {
       return res.status(400).json({ error: "Invalid amount" });
     }
 
-    // Convert amount to cents
     const amountInCents = Math.round(parseFloat(amount.toString()) * 100);
 
     const paymentIntent = await stripe.paymentIntents.create({
