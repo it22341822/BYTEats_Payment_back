@@ -4,6 +4,16 @@ import Payment from '../models/Payment.model';
 import { emitStatusUpdate } from '../services/socketServices';
 
 
+export const getAllPayments = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const payments = await Payment.find({});
+    res.status(200).json({ success: true, data: payments });
+  } catch (error) {
+    console.error('Error fetching all payments:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 export const updatePaymentStatus = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
@@ -67,4 +77,9 @@ export const getPaymentStatus = async (req: Request, res: Response): Promise<voi
       res.status(500).json({ success: false, message: 'Server error' });
     }
   };
+
+
+
+
+
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { updatePaymentStatus, getPaymentStatus } from '../controllers/statusController';
+import { updatePaymentStatus, getPaymentStatus,getAllPayments } from '../controllers/statusController';
 
 const router = express.Router();
 
@@ -23,6 +23,17 @@ async(req: express.Request, res: express.Response, next: express.NextFunction) =
         next(error);
     }
  }
+);
+
+// Get all payments
+router.get('/',
+  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    try {
+      await getAllPayments(req, res);
+    } catch (error) {
+      next(error);
+    }
+  }
 );
 
 
