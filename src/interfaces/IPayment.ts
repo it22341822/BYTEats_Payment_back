@@ -1,7 +1,7 @@
-import { Types } from "mongoose";
+import mongoose from 'mongoose';
 
-export interface IOrderItem {
-  itemId: Types.ObjectId;
+interface IOrderItem {
+  itemId: mongoose.Types.ObjectId;
   name: string;
   quantity: number;
   price: number;
@@ -22,5 +22,7 @@ export interface IPayment {
   status: "pending" | "confirmed"; 
   paymentMethod: string; 
   createdAt: Date;
-  updatedAt: Date; 
+  updatedAt: Date;
+  statustrack: "pending"| "confirmed"| "shipped"| "delivered"| "cancelled"|"requires_payment_method";
 }
+
