@@ -24,7 +24,6 @@ const paymentSchema: Schema = new mongoose.Schema(
     currency: {
       type: String,
       required: true,
-      default: "usd",
     },
     paymentIntentId: {
       type: String,
